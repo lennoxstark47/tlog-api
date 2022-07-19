@@ -28,8 +28,40 @@ router.post('/register', (req, res) => {
 		});
 });
 
-router.post('/login', (req,res) => {
-    
-})
+router.post('/login', (req, res) => {
+	const email = req.body.email;
+	const password = req.body.password;
+	User.findOne({ email: email })
+		.then((user) => {
+			if (user) {
+				if (user.password !== password) {
+					res.status(404).json({
+						message: 'Password is incorrect',
+						success: false,
+						data: null,
+					});
+				} else {
+					res.status(200).json({
+						message: 'User logged in',
+						success: true,
+						data: user,
+					});
+				}
+			} else {
+				res.status(404).json({
+					message: 'User not found',
+					success: false,
+					data: user,
+				});
+			}
+		})
+		.catch((err) => {
+			res.status(500).json({
+				message: 'User not logged in',
+				success: false,
+				data: err,
+			});
+		});
+});
 
 module.exports = router;
