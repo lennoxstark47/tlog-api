@@ -35,7 +35,7 @@ router.post('/login', (req, res) => {
 		.then((user) => {
 			if (user) {
 				if (user.password !== password) {
-					res.status(404).json({
+					res.status(200).json({
 						message: 'Password is incorrect',
 						success: false,
 						data: null,
